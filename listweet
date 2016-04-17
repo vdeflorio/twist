@@ -1,0 +1,16 @@
+tmpfile=$(mktemp /tmp/tempor.XXXXXX)
+
+echo "Insert a twitter list"
+read list
+echo "Insert a tweet to broadcast to list $list"
+read tweet
+
+for i in `sudo t list members  "$list"  |xargs -0` ; do
+echo @"$i" >> "$tmpfile"
+done
+
+sudo ./twist -m "$tweet" -l "$tmpfile" -o shout.sh
+
+chmod +x shout.sh
+
+rm "$tmpfile"
